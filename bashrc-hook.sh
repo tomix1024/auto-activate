@@ -36,14 +36,7 @@ deactivate_autoactivate () {
     return ${__RET}
 }
 
-cd () {
-    # Actually cd into new directory
-    builtin cd "$@"
-    local __RET=$?
-    if [ ${__RET} != 0 ] ; then
-        return ${__RET}
-    fi
-
+run_autoactivate () {
     # Check if new directory can be activated
     local __DIR=$(pwd)
     while [ "${__DIR:-/}" != "/" ] ; do
@@ -74,5 +67,21 @@ cd () {
     __AUTOACTIVATED_DIR="${__DIR}"
     source "${__DIR}/.autoactivate"
 
-    return $RET
+    return ${__RET}
 }
+
+cd () {
+    # Actually cd into new directory
+    builtin cd "$@"
+    local __RET=$?
+    if [ ${__RET} != 0 ] ; then
+        return ${__RET}
+    fi
+
+    run_autoactivate
+    __RET=$?
+    return ${__RET}
+}
+
+# When sourcing this script, immediately run autoactivate!
+run_autoactivate
