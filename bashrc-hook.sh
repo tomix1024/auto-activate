@@ -27,10 +27,10 @@ deactivate_autoactivate () {
     local __RET=0
     if ! [ -z "${__AUTOACTIVATED_DIR:x}" ] ; then
         # If there is a deactivate method, call it!
-        #if ! [ -z "${deactivate:x}" ] ; then
+        if type -t deactivate ; then
             deactivate
-        #    __RET=$?
-        #fi
+            __RET=$?
+        fi
     fi
     unset __AUTOACTIVATED_DIR
     return ${__RET}
