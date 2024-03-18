@@ -4,23 +4,18 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
 fi
 
 has_valid_autoactivate () {
-    local __RET=1
     local __DIR="${1:-.}"
     if [ -f "${__DIR}/.autoactivate" ] ; then
-        #echo "Found .autoactivate"
         for sigfile in [ "${__DIR}/.autoactivate.asc" "${__DIR}/.autoactivate.sig" ] ; do
-            #echo "Checking signature"
-            gpg --verify "${sigfile}" &> /dev/null
-            __RET=$?
-            if [ ${__RET} == 0 ] ; then
-                break
+            # Check signature
+            if gpg --verify "${sigfile}" &> /dev/null ; then
+                # Successful verification
+                return 0
             fi
         done
-        #if [ ${__RET} == 0 ] ; then
-        #    echo "Signature okay"
-        #fi
     fi
-    return ${__RET}
+    # Verification failed
+    return 1
 }
 
 deactivate_autoactivate () {
