@@ -22,7 +22,7 @@ deactivate_autoactivate () {
     local __RET=0
     if ! [ -z "${__AUTOACTIVATED_DIR:x}" ] ; then
         # If there is a deactivate method, call it!
-        if type -t deactivate ; then
+        if type -t deactivate &> /dev/null ; then
             deactivate
             __RET=$?
         fi
