@@ -26,6 +26,8 @@ conda activate my-env
 
 Using Python virtual environments...
 ```bash
+# Contents of .autoactivate
+
 # Activate a python venv
 MY_DIR="$(dirname $(realpath ${BASH_SOURCE[0]}))"
 source ${MY_DIR}/.venv/bin/activate
